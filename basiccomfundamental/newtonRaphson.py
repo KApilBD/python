@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Oct 25 21:45:52 2018
 
-@author: Kapil
-"""
 
 x = float(input("Enter any number: "))
 
