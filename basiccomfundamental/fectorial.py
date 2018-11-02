@@ -21,7 +21,7 @@ print(iterPower(2.1, 7))
 
 def iterPower(base, exp):
     if(exp == 0):
-        return base
+        return 1
     else:
         return base*iterPower(base, exp-1)
     
