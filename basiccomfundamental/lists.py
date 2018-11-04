@@ -47,5 +47,10 @@ s.split('!')
 print(s.split('!'))
 
 #print(''.join(L))
+
 print('_'.join(L))
+
+
+print(L.insert(0,67))
+print(L)
 
