@@ -7,6 +7,7 @@
 # but you will have to know how to use the functions
 
 import random
+import string
 
 WORDLIST_FILENAME = "words.txt"
 
@@ -25,7 +26,6 @@ def loadWords():
     # wordlist: list of strings
     wordlist = line.split()
     print("  ", len(wordlist), "words loaded.")
-    print("Welcome to the game Hangman!")
     return wordlist
 
 def chooseWord(wordlist):
@@ -33,6 +33,7 @@ def chooseWord(wordlist):
     wordlist (list): list of words (strings)
 
     Returns a word from wordlist at random
+
     """
     return random.choice(wordlist)
 
@@ -50,8 +51,11 @@ def isWordGuessed(secretWord, lettersGuessed):
     returns: boolean, True if all the letters of secretWord are in lettersGuessed;
       False otherwise
     '''
-    # FILL IN YOUR CODE HERE...
-    
+    flag = True
+    for i in range(len(secretWord)):
+        if secretWord[i] not in lettersGuessed :
+            flag = False
+    return flag
 
 
 
@@ -62,9 +66,18 @@ def getGuessedWord(secretWord, lettersGuessed):
     returns: string, comprised of letters and underscores that represents
       what letters in secretWord have been guessed so far.
     '''
-    # FILL IN YOUR CODE HERE...
-
-
+    guessedWord = ''
+    for letter in secretWord :
+        if letter in lettersGuessed :
+            guessedWord += letter
+#            for i in range(len(secretWord)):
+#                if secretWord[i] == letter :
+#                    guessedWord += secretWord[i]
+#                else:
+#                    guessedWord += '_ '
+        else:
+            guessedWord += '_ '
+    return(guessedWord)
 
 def getAvailableLetters(lettersGuessed):
     '''
@@ -73,7 +86,11 @@ def getAvailableLetters(lettersGuessed):
       yet been guessed.
     '''
     # FILL IN YOUR CODE HERE...
-    
+    alpha = string.ascii_lowercase
+    for letter in lettersGuessed:
+        if letter in alpha:
+            alpha= alpha.replace(letter, '')
+    return(alpha)
 
 def hangman(secretWord):
     '''
@@ -96,15 +113,44 @@ def hangman(secretWord):
     Follows the other limitations detailed in the problem write-up.
     '''
     # FILL IN YOUR CODE HERE...
-
-
-
-
-
+    print("Welcome to the game Hangman!")     
+    print("I am thinking of a word that is %a letters long"%len(secretWord))
+    lettersGuessed = []
+    guesses = 8
+    mistakesMade = 0
+    check = False
+#    alpha = getAvailableLetters(lettersGuessed)
+#    print(secretWord)
+#    print(getGuessedWord(secretWord, lettersGuessed))   
+    while mistakesMade < guesses:
+        print('You have %a guesses left.'%guesses)
+        print('Available letters:' + getAvailableLetters(lettersGuessed))
+        letter = input("Please guess a letter:")
+        if letter in secretWord and (lettersGuessed == None or letter not in lettersGuessed):
+            lettersGuessed += letter
+            print("Good guess:"+ getGuessedWord(secretWord, lettersGuessed))
+            print("----------------------------------------------------------------")
+        elif letter not in secretWord:
+            lettersGuessed += letter
+            guesses -= 1
+            print("Oops! That letter is not in my word:"+ getGuessedWord(secretWord, lettersGuessed))
+            print("----------------------------------------------------------------")
+        else:
+            print("Oops! You've already guessed that letter:"+ getGuessedWord(secretWord, lettersGuessed))
+            print("----------------------------------------------------------------")
+        check = isWordGuessed(secretWord, lettersGuessed)
+        if check:
+            print("----------------------------------------------------------------")
+            print("Congratulations, you won!")
+            break
+    if guesses == 0:
+        print("----------------------------------------------------------------")
+        print("Sorry, you ran out of guesses. The word was else. ")
+        print("The word is: " + secretWord)
 
 # When you've completed your hangman function, uncomment these two lines
-# and run this file to test! (hint: you might want to pick your own
+# and run this file to test! (hint: you might want to pick yofur own
 # secretWord while you're testing)
 
-# secretWord = chooseWord(wordlist).lower()
-# hangman(secretWord)
+secretWord = chooseWord(wordlist).lower()
+hangman(secretWord)
