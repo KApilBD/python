@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="container">
+        <div class="control">
+            <h1>My Todo Application</h1>
+            <input type="text" name="" id="input"><br id='br'>
+            <p>Enter Your Task</p>
+            <br>
+            <button type="button" id="add">Add Task</button>     
+            <button type="button" id="remove">Remove Done Task</button>
+            <button type="button" id="removeall">Clear List</button>
+        </div>
+        <ul id="list">
+            <li class="mycheck"><input type="checkbox" name="check" id="check"><label>Go To Gym</label></li>
+            <li class="mycheck"><input type="checkbox" name="check" id="check"><label>Read Book</label></li>        
+            <li class="mycheck"><input type="checkbox" name="check" id="check"><label>Learn New Thing</label></li> 
+            <li class="mycheck"><input type="checkbox" name="check" id="check"><label>Buy Book</label></li>     
+        </ul>
+    </div>
+    <ul>
+        {%for todo_item in all_items%}
+        <li>{{todo_item.content}}
+                <form action="/deleteTodo/{{todo_item.id}}/"
+                    style="display:inline;"
+                    method="post">{%  csrf_token %}
+                    <input type="submit" value="Delete">
+                </form> 
+        </li>
+        {%endfor%}
+    </ul>
+
+    <form action="/addTodo/" method="post">{%  csrf_token %}
+        <input type="text" name="content">
+        <input type="submit" value="Add">
+    </form>
+    
+    <script src="todo.js"></script>
+</body>
+</html>
